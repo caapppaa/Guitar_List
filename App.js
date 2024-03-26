@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, StyleSheet, Text, TextInput, View, ScrollView } from "react-native";
 
 export default function App() {
   const [enteredGuitarText, setEnteredGuitarText] = useState("");
@@ -23,14 +23,16 @@ export default function App() {
         />
         <Button title="Add Guitar" onPress={addGuitarHandler} />
       </View>
+      <Text style={styles.titleText}>My Collection</Text>
 
       <View style={styles.guitarsContainer}>
-        <Text>My Collection</Text>
+      <ScrollView>
         {guitar.map((guitar) => (
           <View key={guitar} style={styles.guitarItem}>
             <Text style={styles.guitarText}> {guitar} </Text>
           </View>
         ))}
+      </ScrollView>
       </View>
     </View>
   );
@@ -62,12 +64,16 @@ const styles = StyleSheet.create({
     flex: 5,
   },
   guitarItem: {
-    margin: 3,
+    margin: 5,
     padding: 8,
     borderRadius: 6,
     backgroundColor: "#161b22"
   },
   guitarText: {
     color: "white",
+  },
+  titleText: {
+    fontSize: 15,
+    color: "grey",
   }
 });
