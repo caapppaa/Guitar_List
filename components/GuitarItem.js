@@ -1,10 +1,14 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Pressable } from "react-native";
 // Resopnsible for rending each Guitar item in the list
 function GuitarItem(props) {
+    
   return (
-    <View style={styles.guitarItem}>
-      <Text style={styles.guitarText}> {props.text} </Text>
-    </View>
+    <Pressable style={({pressed}) => {}}
+    onPress={props.onDeleteGuitar.bind(this, props.id)}>
+      <View style={styles.guitarItem}>
+        <Text style={styles.guitarText}> {props.text} </Text>
+      </View>
+    </Pressable>
   );
 }
 
@@ -15,9 +19,9 @@ const styles = StyleSheet.create({
     margin: 5,
     padding: 8,
     borderRadius: 6,
-    backgroundColor: "#161b22",
+    backgroundColor: "#1e385b",
   },
   guitarText: {
-    color: "white",
+    color: "white"
   },
 });

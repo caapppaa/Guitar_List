@@ -1,10 +1,5 @@
 import { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-} from "react-native";
+import { StyleSheet, Text, View, FlatList } from "react-native";
 
 import GuitarItem from "./components/GuitarItem";
 import GuitarInput from "./components/GuitarInput";
@@ -15,8 +10,17 @@ export default function App() {
   function addGuitarHandler(enteredGuitarText) {
     setGuitars((currentGuitars) => [
       ...currentGuitars,
-      { text: enteredGuitarText, key: Math.random().toString() },
+      { text: enteredGuitarText, id: Math.random().toString() },
     ]);
+  }
+
+  function deleteGuitarHandler(id) {
+    setGuitars((currentGuitars) => {
+      // Filters based on statement, 
+      // in this case if the guitar is equal to the guitar you've clicked on. 
+      // Determined by Guitar id
+      return currentGuitars.filter((guitar) => guitar.id !== id);
+    });
   }
 
   return (
@@ -30,7 +34,16 @@ export default function App() {
           data={guitar}
           renderItem={(itemData) => {
             // Passing Props to the GuitarItem.js File which is responsible for rending the inputted Guitars
-            return <GuitarItem text={itemData.item.text} />;
+            return (
+              <GuitarItem
+                text={itemData.item.text}
+                id={itemData.item.id}
+                onDeleteGuitar={deleteGuitarHandler}
+              />
+            );
+          }}
+          keyExtractor={(item, index) => {
+            return item.id;
           }}
           alwaysBounceVertical={false}
         />
@@ -49,7 +62,8 @@ const styles = StyleSheet.create({
     flex: 5,
   },
   titleText: {
-    fontSize: 15,
-    color: "grey",
+    fontSize: 20,
+    color: "#050320",
+    textAlign: "center"
   },
 });
