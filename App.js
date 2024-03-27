@@ -1,38 +1,39 @@
 import { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+} from "react-native";
+
+import GuitarItem from "./components/GuitarItem";
+import GuitarInput from "./components/GuitarInput";
 
 export default function App() {
-  const [enteredGuitarText, setEnteredGuitarText] = useState("");
   const [guitar, setGuitars] = useState([]);
 
-  function specGuitarHandler(enteredText) {
-    setEnteredGuitarText(enteredText);
-  }
-
-  function addGuitarHandler() {
-    setGuitars((currentGuitars) => [...currentGuitars, enteredGuitarText]);
+  function addGuitarHandler(enteredGuitarText) {
+    setGuitars((currentGuitars) => [
+      ...currentGuitars,
+      { text: enteredGuitarText, key: Math.random().toString() },
+    ]);
   }
 
   return (
+    // Passing Props to the Guitar Input box in GuitarInput.js
     <View style={styles.appContainer}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Add Your guitars!"
-          onChangeText={specGuitarHandler}
-        />
-        <Button title="Add Guitar" onPress={addGuitarHandler} />
-      </View>
+      <GuitarInput onAddGuitar={addGuitarHandler} />
       <Text style={styles.titleText}>My Collection</Text>
 
       <View style={styles.guitarsContainer}>
-      <ScrollView>
-        {guitar.map((guitar) => (
-          <View key={guitar} style={styles.guitarItem}>
-            <Text style={styles.guitarText}> {guitar} </Text>
-          </View>
-        ))}
-      </ScrollView>
+        <FlatList
+          data={guitar}
+          renderItem={(itemData) => {
+            // Passing Props to the GuitarItem.js File which is responsible for rending the inputted Guitars
+            return <GuitarItem text={itemData.item.text} />;
+          }}
+          alwaysBounceVertical={false}
+        />
       </View>
     </View>
   );
@@ -44,36 +45,11 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     paddingHorizontal: 16,
   },
-  inputContainer: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 24,
-    borderBottomWidth: 1,
-    BorderBottomColour: "#cccccc",
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: "#cccccc",
-    width: "70%",
-    marginRight: 8,
-    padding: 8,
-  },
   guitarsContainer: {
     flex: 5,
-  },
-  guitarItem: {
-    margin: 5,
-    padding: 8,
-    borderRadius: 6,
-    backgroundColor: "#161b22"
-  },
-  guitarText: {
-    color: "white",
   },
   titleText: {
     fontSize: 15,
     color: "grey",
-  }
+  },
 });
