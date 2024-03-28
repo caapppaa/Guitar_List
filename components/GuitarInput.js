@@ -55,7 +55,7 @@ export default GuitarInput;
 const styles = StyleSheet.create({
   inputContainer: {
     flex: 1,
-    paddingTop: '30%',
+    paddingTop: "30%",
     alignItems: "center",
     padding: 16,
     backgroundColor: "#032a1a",
