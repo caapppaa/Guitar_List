@@ -1,32 +1,53 @@
 import { useState } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, Text, View, FlatList, Button } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
 import GuitarItem from "./components/GuitarItem";
 import GuitarInput from "./components/GuitarInput";
 
 export default function App() {
   const [guitar, setGuitars] = useState([]);
+  const [modalIsVisible, setModalIsVisible] = useState(false);
+
+  function startAddGuitarHandler() {
+    setModalIsVisible(true);
+  }
+  function endAddGuitarHandler() {
+    setModalIsVisible(false);
+  }
 
   function addGuitarHandler(enteredGuitarText) {
     setGuitars((currentGuitars) => [
       ...currentGuitars,
       { text: enteredGuitarText, id: Math.random().toString() },
     ]);
+    endAddGuitarHandler();
   }
 
   function deleteGuitarHandler(id) {
     setGuitars((currentGuitars) => {
-      // Filters based on statement, 
-      // in this case if the guitar is equal to the guitar you've clicked on. 
+      // Filters based on statement,
+      // in this case if the guitar is equal to the guitar you've clicked on.
       // Determined by Guitar id
       return currentGuitars.filter((guitar) => guitar.id !== id);
     });
   }
 
   return (
-    // Passing Props to the Guitar Input box in GuitarInput.js
+    <>
+    <StatusBar style='light'/>
     <View style={styles.appContainer}>
-      <GuitarInput onAddGuitar={addGuitarHandler} />
+      <Button
+        style={styles.button}
+        title="Add new Guitar"
+        color={"#b7e4c9"}
+        onPress={startAddGuitarHandler}
+      />
+      <GuitarInput
+        visible={modalIsVisible}
+        onAddGuitar={addGuitarHandler}
+        onCancel={endAddGuitarHandler}
+      />
       <Text style={styles.titleText}>My Collection</Text>
 
       <View style={styles.guitarsContainer}>
@@ -49,21 +70,28 @@ export default function App() {
         />
       </View>
     </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
-    paddingTop: 60,
+    paddingTop: '30%',
     paddingHorizontal: 16,
+    backgroundColor: "#032a1a",
   },
   guitarsContainer: {
     flex: 5,
   },
   titleText: {
-    fontSize: 20,
-    color: "#050320",
-    textAlign: "center"
+    fontSize: 40,
+    color: "#ffffff",
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  button: {
+    width: "30%",
+    marginHorizontal: 8,
   },
 });
